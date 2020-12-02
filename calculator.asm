@@ -44,30 +44,30 @@ summ:
         jmp errorCF           ;otherwise, output an error
 ;------------------------------------------------
 minus:
-        mov ah,09h            ;команда на вывод строки
-        mov dx,offset _nc     ;в dx смещение на строку
-        int 21h               ;выполнить команду
+        mov ah,09h            ;command to output a line
+        mov dx,offset _nc     ;in dx offsets per line
+        int 21h               ;execute command
         mov ax,first          ;ax=first 
         mov bx,second
         sub ax,bx             ;ax=ax-bx
-        jno write_res         ;если нет заема(OF=0), то вывод результата
-        jmp errorOF           ;иначе вывести ошибку
+        jno write_res         ;if there is no carry(OF=0), then the output of the result
+        jmp errorOF           ;otherwise,output an error
 ;------------------------------------------------
 ;Subtract of number
 write_res:
-        test ax,ax            ;проверим знак числа
-        jns init              ;SF=0? если да, то просто вывод числа
-        mov cx,ax             ;иначе выводим как отрицательное, cx=ax
-        mov ah,02h            ;выводим символ
-        mov dl,'-'            ;поместим в dl символ минуса
-        int 21h               ;выполним команду
-        mov ax,cx             ;вернем старое значение, cx=ax
-        neg ax                ;сменим знак операнда     
+        test ax,ax            ;check the sign of the number
+        jns init              ;SF=0? if yes, then the output of the result
+        mov cx,ax             ;otherwise we output as negative, cx = ax
+        mov ah,02h            ;display the symbol
+        mov dl,'-'            ;put a minus symbol in dl
+        int 21h               ;execute command
+        mov ax,cx             ;return the old value, cx = ax
+        neg ax                ;change the sign of the operand    
 init:
         xor cx,cx             ;cx=0
         xor dx,dx             ;dx=0
-    push -1               ;сохраним признак конца числа
-    mov cx,10         ;делим на 10
+    push -1               ;keep the end-of-number sign
+    mov cx,10         ;division by 10
 repeat: 
         xor dx,dx         ;очистим регистр dx
     div cx                ;делим 
