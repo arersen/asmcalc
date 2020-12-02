@@ -24,13 +24,13 @@ begin:
 ;------------------------------------------------
 ;Determine the type of operation
 enter_type_operation: 
-        mov ah,01h            ;вызов команды ввода символа с клавиатуры
-        int 21h               ;выполнить команду
-        cmp al,'+'            ;введен "+" 
-        je summ               ;да -> суммируем 2 числа
-        cmp al,'-'            ;введен "-" 
-        je minus              ;да -> вычитаем 2 числа
-        jmp enter_type_operation;во всех других случаях - повтор ввода
+        mov ah,01h            ;calling a command to enter a character from the keyboard
+        int 21h               ;execute command
+        cmp al,'+'            ;introduced "+" 
+        je summ               ;yes -> summing 2 numbers
+        cmp al,'-'            ;introduced "-" 
+        je minus              ;yes -> subtract 2 numbers
+        jmp enter_type_operation ;in all other cases - repeat input
 ;------------------------------------------------
 ;Суммирование двух чисел
 summ:
