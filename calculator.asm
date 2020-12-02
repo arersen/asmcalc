@@ -69,33 +69,33 @@ init:
     push -1               ;keep the end-of-number sign
     mov cx,10         ;division by 10
 repeat: 
-        xor dx,dx         ;очистим регистр dx
-    div cx                ;делим 
-    push dx               ;сохраним цифру
-    cmp ax,0          ;остался 0? (оптимальнее or ax,ax)
-    jne repeat        ;нет -> продолжим
-    mov ah,2h             ;вывод символа
+        xor dx,dx         ;clear registr dx
+    div cx                ;division
+    push dx               ;save number
+    cmp ax,0          ;left 0? (more optimal or ax, ax)
+    jne repeat        ;no -> continue
+    mov ah,2h             ;output symbol
 digit:  
-        pop dx                ;восстановим цифру
-    cmp dx,-1         ;дошли до конца -> выход {оптимальнее: or dx,dx jl ex}
-    je exit               ;завершить вывод
-    add dl,'0'        ;преобразуем число в цифру
-    int 21h               ;выведем цифру на экран
-    jmp digit         ;и продолжим 
+        pop dx                ;restore the figure
+    cmp dx,-1         ;reached the end -> exit {optimal: or dx, dx jl ex}
+    je exit               ;finish output
+    add dl,'0'        ;convert number to digit
+    int 21h               ;output digit to display
+    jmp digit         ;and continue
 ;------------------------------------------------
 ;Overflow error output during addition operation
 errorCF:
-        mov ah,09h            ;команда на вывод строки
-        mov dx,offset _errorCF;в dx смещение на строку
-        int 21h               ;выполнить команду
-        jmp exit              ;переход по метке
+        mov ah,09h            ;command to output a line
+        mov dx,offset _errorCF;in dx offset by line
+        int 21h               ;execute command
+        jmp exit              ;jump by label
 ;------------------------------------------------
 ;Loan error output when subtracting      
 errorOF:
-        mov ah,09h            ;команда на вывод строки
-        mov dx,offset _errorOF;в dx смещение на строку
-        int 21h               ;выполнить команду
-        jmp exit              ;переход по метке
+        mov ah,09h            ;command to output a line
+        mov dx,offset _errorOF;in dx offset by line
+        int 21h               ;execute command
+        jmp exit              ;jump by label
 ;------------------------------------------------ 
 exit:
         mov ax,4c00h       
