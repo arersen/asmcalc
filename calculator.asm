@@ -32,16 +32,16 @@ enter_type_operation:
         je minus              ;yes -> subtract 2 numbers
         jmp enter_type_operation ;in all other cases - repeat input
 ;------------------------------------------------
-;Суммирование двух чисел
+;Summing 2 numbers
 summ:
-        mov ah,09h            ;команда на вывод строки
-        mov dx,offset _nc     ;в dx смещение на строку
-        int 21h               ;выполнить команду
+        mov ah,09h            ;command to output a line
+        mov dx,offset _nc     ;in dx offsets per line
+        int 21h               ;execute command
         mov ax,first          ;ax=first
-        mov bx,second
+        mov bx,second 
         add ax,bx             ;ax=ax+bx
-        jnc write_res         ;если нет переноса(CF=0), то вывод результата
-        jmp errorCF           ;иначе вывести ошибку
+        jnc write_res         ;if there is no carry (CF = 0), then the output of the result
+        jmp errorCF           ;otherwise, output an error
 ;------------------------------------------------
 minus:
         mov ah,09h            ;команда на вывод строки
@@ -53,7 +53,7 @@ minus:
         jno write_res         ;если нет заема(OF=0), то вывод результата
         jmp errorOF           ;иначе вывести ошибку
 ;------------------------------------------------
-;Вывод числа
+;Subtract of number
 write_res:
         test ax,ax            ;проверим знак числа
         jns init              ;SF=0? если да, то просто вывод числа
@@ -83,14 +83,14 @@ digit:
     int 21h               ;выведем цифру на экран
     jmp digit         ;и продолжим 
 ;------------------------------------------------
-;Вывод ошибки о переполнении, при операции сложения
+;Overflow error output during addition operation
 errorCF:
         mov ah,09h            ;команда на вывод строки
         mov dx,offset _errorCF;в dx смещение на строку
         int 21h               ;выполнить команду
         jmp exit              ;переход по метке
 ;------------------------------------------------
-;Вывод ошибки о заеме, при операции вычитания       
+;Loan error output when subtracting      
 errorOF:
         mov ah,09h            ;команда на вывод строки
         mov dx,offset _errorOF;в dx смещение на строку
